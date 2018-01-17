@@ -1,4 +1,4 @@
-# **react-next-isomorphic-boilerplate**
+# **react-mobx-boilerplate**
 
 A react boilerplate with a powerful state container
 
