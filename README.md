@@ -17,6 +17,10 @@ Then run the server:
 ```
 development：
 $ yarn start
+If your project needs more customization, you can "eject" and customize it,
+and all the configuration and build dependencies will be moved directly into your project, so you can pick up right where you left off,
+but then you will need to maintain this configuration.
+$ yarn eject
 ```
 
 Open [http://localhost:3000](http://localhost:3000/) in you browser.
