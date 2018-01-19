@@ -6,11 +6,16 @@ import User from './user';
 import Todo from './todo';
 import http from '../utils/request';
 
+/*
+* 定义model时，最好通过types.optional给属性设置一个默认值
+* 如果不设置，则需要在调用TodosStore.create()的时候传入默认值
+* */
 const TodosStore = types
     .model({
-        users: types.array(User),
+        users: types.optional(types.array(User), []),
         list: types.optional(types.map(Todo), {})
     })
+    // views中为一些计算属性computed
     .views(self => ({
         get pendingCount() {
             return self.list.values().filter(todo => !todo.done).length
@@ -22,6 +27,7 @@ const TodosStore = types
             return self.list.values().filter(todo => todo.done === done)
         }
     }))
+    // 导出的可供外部调用的action函数
     .actions(self => ({
         addTodo(id, name) {
             self.list.set(id, Todo.create({ name }));
@@ -38,4 +44,4 @@ const TodosStore = types
         }),
     }));
 
-export default TodosStore;
+export default TodosStore.create();

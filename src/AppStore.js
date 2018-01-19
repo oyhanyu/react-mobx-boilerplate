@@ -5,5 +5,5 @@
 import TodosStore from './stores/todos';
 
 export default {
-    todos: TodosStore.create({users:[]})
+    todos: TodosStore
 }
