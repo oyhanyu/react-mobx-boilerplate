@@ -1,14 +1,14 @@
 /**
  * Created by oyhanyu on 2018/1/17.
  */
-import { types, applySnapshot } from "mobx-state-tree";
+import { types, flow, applySnapshot } from "mobx-state-tree";
 import User from './user';
 import Todo from './todo';
-
+import http from '../utils/request';
 
 const TodosStore = types
     .model({
-        users: types.map(User),
+        users: types.array(User),
         list: types.optional(types.map(Todo), {})
     })
     .views(self => ({
@@ -22,36 +22,20 @@ const TodosStore = types
             return self.list.values().filter(todo => todo.done === done)
         }
     }))
-    .actions(self => {
-        function addTodo(id, name) {
+    .actions(self => ({
+        addTodo(id, name) {
             self.list.set(id, Todo.create({ name }));
-        }
-
-        return { addTodo };
-    });
-
-const store = TodosStore.create({
-    users: {
-        "1": {
-            id: "1",
-            name: "mweststrate"
         },
-        "2": {
-            id: "2",
-            name: "mattiamanzati"
-        },
-        "3": {
-            id: "3",
-            name: "johndoe"
-        }
-    },
-    list: {
-        "1": {
-            name: "Eat a cake",
-            done: true
-        }
-    }
-});
 
+        fetchUsers: flow(function* fetchUsers() { // <- note the star, this a generator function!
+            try {
+                const users = yield http('/mock/2877/getUser');
+                self.users = users.result;
+            } catch (e) {
+                // ... including try/catch error handling
+                console.error("Failed to fetch users", e)
+            }
+        }),
+    }));
 
-export default store;
+export default TodosStore;

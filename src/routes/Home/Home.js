@@ -17,12 +17,26 @@ const TodoCounterView = observer(props =>
 const UserPickerView = observer(props =>
     <select value={props.user ? props.user.id : ""} onChange={e => props.onChange(e.target.value)}>
         <option value="">-none-</option>
-        {props.todos.users.values().map((user, index) => <option value={user.id} key={index}>{user.name}</option>)}
+        {props.todos.users.map((user, index) => <option value={user.id} key={index}>{user.name}</option>)}
     </select>
 );
 
 class Home extends Component {
+
+    constructor(props) {
+        super(props);
+        this. state = {
+            todos: props.todos
+        }
+    }
+
+    componentDidMount() {
+        console.log('mount');
+        this.state.todos.fetchUsers();
+    }
+
     render() {
+        const { todos } = this.state;
         return (
             <div className="App">
                 <header className="App-header">
@@ -33,11 +47,11 @@ class Home extends Component {
                     This boilerplate is based react, mobx, mobx-state-tree(Opinionated, transactional, MobX powered state container)
                 </p>
                 <div className="todo-list">
-                    <TodoCounterView  todos={this.props.todos}/>
-                    <button onClick={e => this.props.todos.addTodo(randomId(), "New Task")}>
+                    <TodoCounterView  todos={todos}/>
+                    <button onClick={e => todos.addTodo(randomId(), "New Task")}>
                         Add Task
                     </button>
-                    {this.props.todos.list.values().map((todo, index) =>
+                    {todos.list.values().map((todo, index) =>
                         <div key={index}>
                             <input
                                 type="checkbox"
@@ -49,7 +63,7 @@ class Home extends Component {
                                 value={`${todo.name}-${todo.done}`}
                                 onChange={e => todo.setName(e.target.value)}
                             />
-                            <UserPickerView user={todo.user} todos={this.props.todos} onChange={userId => todo.setUser(userId)} />
+                            <UserPickerView user={todo.user} todos={todos} onChange={userId => todo.setUser(userId)} />
                         </div>
                     )}
                 </div>

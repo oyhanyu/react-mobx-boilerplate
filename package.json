@@ -10,7 +10,8 @@
     "react-dom": "^16.2.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.0"
+    "react-scripts": "1.1.0",
+    "whatwg-fetch": "^2.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -18,5 +19,12 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "author": "pilipa-cn oyhanyu"
+  "author": "pilipa-cn oyhanyu",
+  "proxy": {
+    "/mock/": {
+      "target": "http://yapi.demo.qunar.com",
+      "secure": true,
+      "changeOrigin": true
+    }
+  }
 }

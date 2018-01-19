@@ -1,9 +1,9 @@
 /**
  * Created by oyhanyu on 2018/1/16.
- * export all stores
+ * export all stores instance
  */
-import todos from './stores/todos';
+import TodosStore from './stores/todos';
 
 export default {
-    todos
+    todos: TodosStore.create({users:[]})
 }
